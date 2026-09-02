@@ -14,6 +14,7 @@ using Synapse.Infrastructure;
 using Synapse.Infrastructure.Authentication;
 using Synapse.Infrastructure.Database;
 using Synapse.Infrastructure.Repositories;
+using Synapse.Middlewares;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -101,7 +102,9 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+app.UseMiddleware<GlobalExceptionMiddleware>();
 app.UseHttpsRedirection();
+app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
 
