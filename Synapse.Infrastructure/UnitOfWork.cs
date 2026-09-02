@@ -1,5 +1,8 @@
-﻿using Synapse.Application.Interfaces;
+﻿using Microsoft.EntityFrameworkCore;
+using Synapse.Application.Interfaces;
 using Synapse.Application.Interfaces.RepositoryInterfaces;
+using Synapse.Core.Entities;
+using Synapse.Core.Enums;
 using Synapse.Infrastructure.Database;
 
 namespace Synapse.Infrastructure;

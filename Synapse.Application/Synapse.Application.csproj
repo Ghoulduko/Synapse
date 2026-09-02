@@ -10,4 +10,13 @@
       <ProjectReference Include="..\Synapse.Core\Synapse.Core.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <PackageReference Include="BCrypt.Net-Next" Version="4.2.0" />
+      <Using Include="BCrypt.Net.BCrypt" Alias="BC" />
+      <PackageReference Include="FluentValidation" Version="9.5.4" />
+      <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="9.0.19" />
+      <PackageReference Include="Microsoft.IdentityModel.Tokens" Version="8.22.0" />
+      <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="8.22.0" />
+    </ItemGroup>
+
 </Project>

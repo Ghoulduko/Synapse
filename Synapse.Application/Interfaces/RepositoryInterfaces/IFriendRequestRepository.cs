@@ -1,6 +1,11 @@
-﻿namespace Synapse.Application.Interfaces.RepositoryInterfaces;
+﻿using Synapse.Core.Entities;
 
-public class IFriendRequestRepository
+namespace Synapse.Application.Interfaces.RepositoryInterfaces;
+
+public interface IFriendRequestRepository
 {
-    
+    Task CreateFriendRequest(FriendRequest friendRequestDto);
+    Task<FriendRequest?> GetFriendRequestById(int userId);
+    Task DeclineFriendRequest(FriendRequest friendRequest);
+    Task<IEnumerable<User>> GetAllUserFriends(int userId);
 }
