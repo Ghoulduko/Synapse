@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Synapse.Infrastructure.Database;
 
@@ -11,9 +12,11 @@ using Synapse.Infrastructure.Database;
 namespace Synapse.Infrastructure.Migrations
 {
     [DbContext(typeof(SynapseDbContext))]
-    partial class SynapseDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260903183029_AddRefreshTokens")]
+    partial class AddRefreshTokens
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

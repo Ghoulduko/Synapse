@@ -38,6 +38,7 @@ builder.Services.AddScoped<IFriendRequestRepository, FriendRequestRepository>();
 // Auth
 builder.Services.AddScoped<IAuthenticationService, AuthenticationService>();
 builder.Services.AddScoped<ITokenService, TokenService>();
+builder.Services.AddScoped<IRefreshTokenRepository, RefreshTokenRepository>();
 
 // Fluent Validations
 builder.Services.AddValidatorsFromAssembly(typeof(RegisterValidator).Assembly);
@@ -99,7 +100,7 @@ var app = builder.Build();
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
-    app.UseSwaggerUI();
+    app.UseSwaggerUI(); 
 }
 
 app.UseMiddleware<GlobalExceptionMiddleware>();

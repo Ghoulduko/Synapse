@@ -59,18 +59,26 @@ public class AuthenticationService : IAuthenticationService
         
         await _userRepository.Create(newUser);
         
-        var accessToken = await _tokenService.GenerateJwtToken(newUser);
-
-        return new Result<LoginResponseDto>
-        {
-            Success = true,
-            Data = accessToken,
-        };
+        return await _tokenService.GenerateJwtToken(newUser);
     }
     
     public async Task<Result<LoginResponseDto>> Login(LoginRequestDto request)
     {
-        throw new NotImplementedException();
+        await _loginValidator.ValidateAndThrowAsync(request);
+        
+        var normalizedEmail = request.Email.Trim().ToLower();
+        var user = await _userRepository.GetUserByEmail(normalizedEmail);
+
+        if (user == null)
+        {
+            return new Result<LoginResponseDto>
+            {
+                Success = false,
+                Message = "User not found.",
+            };
+        }
+
+        return await _tokenService.GenerateJwtToken(user);
     }
     
     public Task<Result<LoginResponseDto>> Logout()

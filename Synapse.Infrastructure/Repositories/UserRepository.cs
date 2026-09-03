@@ -30,6 +30,11 @@ public class UserRepository : IUserRepository
         return await _context.Users.SingleOrDefaultAsync(u => u.Email == email);
     }
 
+    public async Task<User?> GetUserByUsername(string username)
+    {
+        return await _context.Users.SingleOrDefaultAsync(u => u.Username == username);
+    }
+
     public async Task<IEnumerable<User>> GetAllUsers()
     {
         return await _context.Users.ToListAsync();

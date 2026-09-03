@@ -11,10 +11,9 @@ public class SynapseDbContext : DbContext
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
-        
-        
     }
     
     public DbSet<User> Users { get; set; }
     public DbSet<FriendRequest> FriendRequests { get; set; }
+    public DbSet<RefreshToken> RefreshTokens { get; set; }
 }

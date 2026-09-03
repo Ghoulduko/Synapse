@@ -6,6 +6,6 @@ namespace Synapse.Application.Interfaces.ServiceInterfaces;
 
 public interface ITokenService
 {
-    Task<LoginResponseDto> GenerateJwtToken(User user);
+    Task<Result<LoginResponseDto>> GenerateJwtToken(User user);
     Task<Result<LoginResponseDto>> RotateRefreshToken(string refreshToken);
 }
