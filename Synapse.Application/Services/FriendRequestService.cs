@@ -1,22 +1,78 @@
 ﻿using Synapse.Application.Dtos;
+using Synapse.Application.Interfaces.RepositoryInterfaces;
 using Synapse.Application.Interfaces.ServiceInterfaces;
+using Synapse.Core.Entities;
+using Synapse.Core.Enums;
 using Synapse.Core.Models;
 
 namespace Synapse.Application.Services;
 
 public class FriendRequestService : IFriendRequestService
 {
-    public Task<Result<FriendRequestDto>> CreateFriendRequest(FriendRequestDto friendRequestDto)
+    private readonly IFriendRequestRepository _friendRequestepository;
+
+    public FriendRequestService(IFriendRequestRepository repository)
     {
-        throw new NotImplementedException();
+        _friendRequestepository = repository;
     }
 
-    public Task<Result<FriendRequestDto>> UpdateFriendRequest(FriendRequestDto friendRequestDto)
+    public async Task<IEnumerable<UserDto>> GetUserFriendRequestSenderAsync(int userId)
     {
-        throw new NotImplementedException();
+        var senders = await _friendRequestepository.GetAllUserFriendRequestsSenders(userId);
+
+        return senders.Select(u => new UserDto
+        {
+            Id = u.Id,
+            Username = u.Username,
+            Email = u.Email,
+        });
     }
 
-    public Task<Result<FriendRequestDto>> DeleteFriendRequest(int friendRequestId)
+    public async Task<Result<FriendRequestDto>> CreateFriendRequest(int senderId, int receiverId)
+    {
+        var friendRequestInDb = await _friendRequestepository.GetFriendRequestByUserId(senderId);
+        if (friendRequestInDb != null)
+        {
+            return new Result<FriendRequestDto>
+            {
+                Success = false,
+                Message = "Friend request already exists."
+            };
+        }
+
+        var friendRequest = new FriendRequest(senderId, receiverId);
+        await _friendRequestepository.CreateFriendRequest(friendRequest);
+
+        return new Result<FriendRequestDto>
+        {
+            Success = true,
+            Message = "Friend request created successfully"
+        };
+    }
+
+    public async Task<Result<FriendRequestDto>> UpdateFriendRequest(int senderId, int receiverId)
+    {
+        var friendRequest = await _friendRequestepository.GetFriendRequest(senderId, receiverId);
+        if (friendRequest == null)
+        {
+            return new Result<FriendRequestDto>
+            {
+                Success = false,
+                Message = "Friend request not found."
+            };
+        }
+        
+        friendRequest.Status = FriendRequestStatus.Accepted;
+        await _friendRequestepository.SaveChangesAsync();
+
+        return new Result<FriendRequestDto>
+        {
+            Success = true,
+            Message = "Friend request accepted successfully"
+        };
+    }
+
+    public async Task<Result<FriendRequestDto>> DeleteFriendRequest(int friendRequestId)
     {
         throw new NotImplementedException();
     }

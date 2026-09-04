@@ -45,4 +45,11 @@ public class UserController : Controller
       return Ok(await _userService.GetAllUsers());
    }
    
+   [HttpGet("GetAllUserFriends")]
+   public async Task<IActionResult> GetAllUserFriends()
+   {
+      var userId = int.Parse(User.FindFirst("Id").Value);
+      return Ok(await _userService.GetAllUserFriends(userId));
+   }
+   
 }

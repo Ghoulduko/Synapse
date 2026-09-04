@@ -30,4 +30,9 @@ public class RefreshTokenRepository : IRefreshTokenRepository
         _context.RefreshTokens.Remove(refreshToken);
         await _context.SaveChangesAsync();
     }
+    
+    public async Task SaveChangesAsync()
+    {
+        await _context.SaveChangesAsync();
+    }
 }

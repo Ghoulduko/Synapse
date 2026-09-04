@@ -5,7 +5,8 @@ namespace Synapse.Application.Interfaces.ServiceInterfaces;
 
 public interface IFriendRequestService
 {
-    Task<Result<FriendRequestDto>> CreateFriendRequest(FriendRequestDto friendRequestDto);
-    Task<Result<FriendRequestDto>> UpdateFriendRequest(FriendRequestDto friendRequestDto);
+    Task<IEnumerable<UserDto>> GetUserFriendRequestSenderAsync(int userId);
+    Task<Result<FriendRequestDto>> CreateFriendRequest(int senderId, int receiverId);
+    Task<Result<FriendRequestDto>> UpdateFriendRequest(int senderId, int receiverId);
     Task<Result<FriendRequestDto>> DeleteFriendRequest(int friendRequestId);
 }

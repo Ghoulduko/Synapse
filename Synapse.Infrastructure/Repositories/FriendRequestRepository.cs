@@ -21,11 +21,17 @@ public class FriendRequestRepository : IFriendRequestRepository
         await _context.SaveChangesAsync();
     }
 
-    public async Task<FriendRequest?> GetFriendRequestById(int friendRequestId)
+    public async Task<FriendRequest?> GetFriendRequest(int senderId, int receiverId)
     {
-        return await _context.FriendRequests.FindAsync(friendRequestId);
+        return await _context.FriendRequests.SingleOrDefaultAsync(r => r.SenderId == senderId && r.ReceiverId == receiverId);
     }
-    
+
+    public async Task<FriendRequest?> GetFriendRequestByUserId(int userId)
+    {
+        return await _context.FriendRequests.SingleOrDefaultAsync(r => 
+            r.ReceiverId == userId || r.SenderId == userId);
+    }
+
     public async Task DeclineFriendRequest(FriendRequest friendRequest)
     {
         _context.FriendRequests.Remove(friendRequest);
@@ -51,5 +57,17 @@ public class FriendRequestRepository : IFriendRequestRepository
             .ToListAsync();
         
         return friends;
+    }
+
+    public async Task<IEnumerable<User>> GetAllUserFriendRequestsSenders(int receiverUserId)
+    {
+        var friendRequests = await _context.FriendRequests.Where(r => r.ReceiverId == receiverUserId && r.Status == FriendRequestStatus.Pending).ToListAsync();
+        var senderIds = friendRequests.Select(r => r.SenderId);
+        return await _context.Users.Where(u => senderIds.Contains(u.Id)).ToListAsync();
+    }
+
+    public async Task SaveChangesAsync()
+    {
+        await _context.SaveChangesAsync();
     }
 }
