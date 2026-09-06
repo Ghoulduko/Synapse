@@ -30,8 +30,18 @@ public class FriendRequestService : IFriendRequestService
 
     public async Task<Result<FriendRequestDto>> CreateFriendRequest(int senderId, int receiverId)
     {
-        var friendRequestInDb = await _friendRequestepository.GetFriendRequestByUserId(senderId);
-        if (friendRequestInDb != null)
+        if (senderId == receiverId)
+        {
+            return new Result<FriendRequestDto>
+            {
+                Success = false,
+                Message = "You cannot send friend request to yourself."
+            };
+        }
+        
+        var friendRequestInDb = await _friendRequestepository.GetFriendRequest(senderId, receiverId);
+        
+        if (friendRequestInDb != null && friendRequestInDb.Status != FriendRequestStatus.Accepted)
         {
             return new Result<FriendRequestDto>
             {
@@ -39,7 +49,27 @@ public class FriendRequestService : IFriendRequestService
                 Message = "Friend request already exists."
             };
         }
+        
+        if (friendRequestInDb != null && friendRequestInDb.Status == FriendRequestStatus.Accepted)
+        {
+            return new Result<FriendRequestDto>
+            {
+                Success = false,
+                Message = "You are already friends."
+            };
+        }
+        
+        var otherGuysRequestToUser = await _friendRequestepository.GetFriendRequest(receiverId, senderId);
 
+        if (otherGuysRequestToUser != null)
+        {
+            return new Result<FriendRequestDto>
+            {
+                Success = false,
+                Message = "Friend request already exists."
+            };
+        }
+        
         var friendRequest = new FriendRequest(senderId, receiverId);
         await _friendRequestepository.CreateFriendRequest(friendRequest);
 
@@ -72,8 +102,33 @@ public class FriendRequestService : IFriendRequestService
         };
     }
 
-    public async Task<Result<FriendRequestDto>> DeleteFriendRequest(int friendRequestId)
+    public async Task<Result<FriendRequestDto>> DeclineFriendRequest(int senderId, int receiverId)
     {
-        throw new NotImplementedException();
+        var friendRequest = await _friendRequestepository.GetFriendRequest(senderId, receiverId);
+        if (friendRequest == null)
+        {
+            return new Result<FriendRequestDto>
+            {
+                Success = false,
+                Message = "Friend request not found."
+            };
+        }
+
+        if (friendRequest.Status == FriendRequestStatus.Accepted)
+        {
+            return new Result<FriendRequestDto>
+            {
+                Success = true,
+                Message = "The friend request is already accepted."
+            };
+        } 
+        
+        await _friendRequestepository.DeclineFriendRequest(friendRequest);
+        return new Result<FriendRequestDto>
+        {
+            Success = true,
+            Message = "Friend request declined successfully"
+        };
+        
     }
 }

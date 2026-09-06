@@ -36,4 +36,11 @@ public class FriendRequestController : Controller
         var receiverId = int.Parse(User.FindFirst("Id").Value);
         return Ok(await _friendRequestService.UpdateFriendRequest(senderId, receiverId));
     }
+    
+    [HttpDelete("DeclineFriendRequest/{senderId}")]
+    public async Task<IActionResult> DeclineFriendRequest(int senderId)
+    {
+        var receiverId = int.Parse(User.FindFirst("Id").Value);
+        return Ok(await _friendRequestService.DeclineFriendRequest(senderId, receiverId));
+    }
 }

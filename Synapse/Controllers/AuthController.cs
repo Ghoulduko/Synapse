@@ -35,3 +35,15 @@ public class AuthController : Controller
         return Ok(await _tokenService.RotateRefreshToken(refreshToken));
     }
 }
+
+// {
+// "password": "Yaryara910",
+// "email": "L.Karkarashvili8@gmail.com"
+// }
+
+// =*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=
+
+// {
+// "password": "Saba11_11",
+// "email": "sabakapanadze80@gmail.com"
+// }

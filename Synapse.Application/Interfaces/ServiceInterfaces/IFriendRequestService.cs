@@ -8,5 +8,5 @@ public interface IFriendRequestService
     Task<IEnumerable<UserDto>> GetUserFriendRequestSenderAsync(int userId);
     Task<Result<FriendRequestDto>> CreateFriendRequest(int senderId, int receiverId);
     Task<Result<FriendRequestDto>> UpdateFriendRequest(int senderId, int receiverId);
-    Task<Result<FriendRequestDto>> DeleteFriendRequest(int friendRequestId);
+    Task<Result<FriendRequestDto>> DeclineFriendRequest(int senderId, int receiverId);
 }

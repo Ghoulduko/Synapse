@@ -6,7 +6,6 @@ public interface IFriendRequestRepository
 {
     Task CreateFriendRequest(FriendRequest friendRequestDto);
     Task<FriendRequest?> GetFriendRequest(int senderId, int receiverId);
-    Task<FriendRequest?> GetFriendRequestByUserId(int userId);
     Task DeclineFriendRequest(FriendRequest friendRequest);
     Task<IEnumerable<User>> GetAllUserFriends(int userId);
     Task<IEnumerable<User>> GetAllUserFriendRequestsSenders(int receiverUserId);
