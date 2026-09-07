@@ -6,4 +6,5 @@ public interface IUnitOfWork
 {
     IUserRepository UserRepository { get; }
     IFriendRequestRepository FriendRequestRepository { get; }
+    IConversationRepository ConversationRepository { get; }
 }

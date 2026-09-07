@@ -11,6 +11,7 @@
     </ItemGroup>
 
     <ItemGroup>
+      <PackageReference Include="AutoMapper" Version="16.2.0" />
       <PackageReference Include="BCrypt.Net-Next" Version="4.2.0" />
       <Using Include="BCrypt.Net.BCrypt" Alias="BC" />
       <PackageReference Include="FluentValidation" Version="9.5.4" />

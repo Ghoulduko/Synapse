@@ -57,7 +57,6 @@ public class TokenService : ITokenService
 
         return new Result<LoginResponseDto>
         {
-            Success = true,
             Data = new LoginResponseDto
             {
                 Username = user.Username,

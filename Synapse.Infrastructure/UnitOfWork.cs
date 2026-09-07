@@ -9,14 +9,17 @@ namespace Synapse.Infrastructure;
 
 public class UnitOfWork : IUnitOfWork
 {
-    private readonly SynapseDbContext _context;
     public IUserRepository UserRepository { get; }
     public IFriendRequestRepository FriendRequestRepository { get; }
+    public IConversationRepository ConversationRepository { get; }
     
-    public UnitOfWork(SynapseDbContext context, IUserRepository userRepository, IFriendRequestRepository friendRequestRepository)
+    public UnitOfWork(
+        IUserRepository userRepository, 
+        IFriendRequestRepository friendRequestRepository,
+        IConversationRepository conversationRepository)
     {
-        _context = context;
         UserRepository = userRepository;
         FriendRequestRepository = friendRequestRepository;
+        ConversationRepository = conversationRepository;
     }
 }

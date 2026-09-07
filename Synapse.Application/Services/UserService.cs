@@ -29,7 +29,6 @@ public class UserService : IUserService
 
         return new Result<UserDto>
         {
-            Success = true,
             Data = new UserDto()
             {
                 Id = user.Id,
@@ -53,7 +52,6 @@ public class UserService : IUserService
 
         return new Result<UserDto>
         {
-            Success = true,
             Data = new UserDto()
             {
                 Id = user.Id,
@@ -77,7 +75,6 @@ public class UserService : IUserService
 
         return new Result<UserDto>
         {
-            Success = true,
             Data = new UserDto()
             {
                 Id = user.Id,
