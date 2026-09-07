@@ -40,6 +40,11 @@ public class UserRepository : IUserRepository
         return await _context.Users.ToListAsync();
     }
     
+    public async Task<List<User>> GetManyUserWithIds(List<int> userIds)
+    {
+        return await _context.Users.Where(u => userIds.Contains(u.Id)).ToListAsync();
+    }
+
     public async Task SaveChangesAsync()
     {
         await _context.SaveChangesAsync();

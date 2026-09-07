@@ -9,5 +9,6 @@ public interface IUserRepository
     Task<User?> GetUserByEmail(string email);
     Task<User?> GetUserByUsername(string username);
     Task<IEnumerable<User>> GetAllUsers();
+    Task<List<User>> GetManyUserWithIds(List<int> userIds);
     Task SaveChangesAsync();
 }

@@ -8,6 +8,7 @@ using Microsoft.OpenApi.Models;
 using Synapse.Application.Interfaces;
 using Synapse.Application.Interfaces.RepositoryInterfaces;
 using Synapse.Application.Interfaces.ServiceInterfaces;
+using Synapse.Application.MapperProfile;
 using Synapse.Application.Services;
 using Synapse.Application.Validators;
 using Synapse.Infrastructure;
@@ -27,13 +28,15 @@ builder.Services.AddDbContext<SynapseDbContext>(i => i.UseSqlServer(builder.Conf
 // Unit Of Work
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
-// General Services
+// Services
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IFriendRequestService, FriendRequestService>();
+builder.Services.AddScoped<IConversationService, ConversationService>();
 
 // Repositories
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IFriendRequestRepository, FriendRequestRepository>();
+builder.Services.AddScoped<IConversationRepository, ConversationRepository>();
 
 // Auth
 builder.Services.AddScoped<IAuthenticationService, AuthenticationService>();
@@ -43,6 +46,8 @@ builder.Services.AddScoped<IRefreshTokenRepository, RefreshTokenRepository>();
 // Fluent Validations
 builder.Services.AddValidatorsFromAssembly(typeof(RegisterValidator).Assembly);
 builder.Services.AddValidatorsFromAssembly(typeof(LoginValidator).Assembly);
+
+builder.Services.AddAutoMapper(cfg => { }, typeof(MapperProfile).Assembly);
 
 var jwtKey = builder.Configuration["JwtConfig:Key"] ?? throw new InvalidOperationException("Jwt key is not configured.");
 
