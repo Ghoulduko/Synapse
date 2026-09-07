@@ -16,4 +16,7 @@ public class SynapseDbContext : DbContext
     public DbSet<User> Users { get; set; }
     public DbSet<FriendRequest> FriendRequests { get; set; }
     public DbSet<RefreshToken> RefreshTokens { get; set; }
+    public DbSet<Conversation> Conversations { get; set; }
+    public DbSet<Message> Messages { get; set; }
+    public DbSet<ConversationParticipant> ConversationParticipants { get; set; }
 }
