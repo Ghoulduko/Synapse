@@ -118,7 +118,7 @@ public class FriendRequestService : IFriendRequestService
         {
             return new Result<FriendRequestDto>
             {
-                Success = true,
+                Success = false,
                 Message = "The friend request is already accepted."
             };
         } 
