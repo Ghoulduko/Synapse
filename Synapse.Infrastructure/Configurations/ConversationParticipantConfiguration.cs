@@ -16,7 +16,7 @@ public class ConversationParticipantConfiguration : IEntityTypeConfiguration<Con
             .OnDelete(DeleteBehavior.Cascade);
         
         builder.HasOne(x => x.Conversation)
-            .WithMany()
+            .WithMany(c => c.Participants)
             .HasForeignKey(x => x.ConversationId)
             .OnDelete(DeleteBehavior.Cascade);
     }
