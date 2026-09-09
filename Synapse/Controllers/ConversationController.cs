@@ -17,7 +17,8 @@ public class ConversationController : Controller
     [HttpPost("CreateConversation")]
     public async Task<IActionResult> CreateConversation(List<int> userIds)
     {
-        return Ok(await _conversationService.CreateConversation(userIds));
+        var userId = int.Parse(User.FindFirst("Id").Value);
+        return Ok(await _conversationService.CreateConversation(userIds, userId));
     }
 
     [HttpGet("GetConversationById")]
@@ -30,7 +31,7 @@ public class ConversationController : Controller
     public async Task<IActionResult> GetUserConversations()
     {
         var userId = int.Parse(User.FindFirst("Id").Value);
-        return Ok(await _conversationService.GetConversationById(userId));
+        return Ok(await _conversationService.GetConversationsOfUser(userId));
     }
     
 }

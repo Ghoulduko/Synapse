@@ -20,9 +20,9 @@ public class MessageService : IMessageService
         _mapper = mapper;
     }
 
-    public async Task<Result<MessageDto>> AddMessageAsync(AddMessageDto message)
+    public async Task<Result<MessageDto>> AddMessageAsync(AddMessageDto message, int senderId)
     {
-        if (message.SenderId < 1 || message.ConversationId < 1)
+        if (senderId < 1 || message.ConversationId < 1)
         {
             return new Result<MessageDto>
             {
@@ -39,12 +39,33 @@ public class MessageService : IMessageService
                 Message = "Invalid Content"
             };
         }
+        
+        var conversation = await _conversationRepository.GetConversationById(message.ConversationId);
+
+        if (conversation == null)
+        {
+            return new Result<MessageDto>
+            {
+                Success = false,
+                Message = "Conversation not found"
+            };
+        }
+
+        if (conversation.Participants.All(p => p.UserId != senderId))
+        {
+            return new Result<MessageDto>
+            {
+                Success = false,
+                Message = "User not in the conversation"
+            };
+        }
 
         var newMessage = new Message
         {
             ConversationId = message.ConversationId,
-            SenderId = message.SenderId,
+            SenderId = senderId,
             Content = message.Content,
+            SentAt = DateTime.UtcNow,
         };
 
         await _messageRepository.AddMessageAsync(newMessage);
@@ -67,7 +88,7 @@ public class MessageService : IMessageService
                 Message = "Message not found"
             };
         }
-
+        
         return new Result<MessageDto>
         {
             Success = true,
@@ -82,12 +103,17 @@ public class MessageService : IMessageService
         };
     }
 
-    public async Task<IEnumerable<MessageDto>> GetConversationMessages(int conversationId)
+    public async Task<IEnumerable<MessageDto>> GetConversationMessages(int conversationId, int senderId)
     {
         var conversation = await _conversationRepository.GetConversationById(conversationId);
         if (conversation == null)
         {
             return null;
+        }
+
+        if (conversation.Participants.All(p => p.UserId != senderId))
+        {
+            throw new UnauthorizedAccessException("You are not authorized to access Messages of this Conversation");
         }
 
         var messages = _mapper.Map<List<MessageDto>>(conversation.Messages);

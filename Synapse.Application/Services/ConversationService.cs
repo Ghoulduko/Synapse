@@ -19,7 +19,7 @@ public class ConversationService : IConversationService
         _mapper = mapper;
     }
 
-    public async Task<Result<ConversationDto>> CreateConversation(List<int> userIds)
+    public async Task<Result<ConversationDto>> CreateConversation(List<int> userIds, int userId)
     {
         if (userIds.Count < 1)
         {
@@ -29,6 +29,8 @@ public class ConversationService : IConversationService
                 Message = "Cannot create a conversation for less than 2 people."
             };
         }
+        
+        userIds.Add(userId);
         var users = await _unitOfWork.UserRepository.GetManyUserWithIds(userIds);
 
         if (users.Any(u => u == null))
